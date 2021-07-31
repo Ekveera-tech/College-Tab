@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  {% load static %}
+  {% load widget_tweaks %}
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Assignments</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" />
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/templatemo-style.css' %}" />
+  
+  </head>
+<!--
+Parallo Template
+https://templatemo.com/tm-534-parallo
+-->
+  <body id="assignmentPage">
+    <div class="parallax-window" data-parallax="scroll" data-image-src="{% static 'img/assignments.jpg' %}">
+      <div class="container-fluid">
+        <div class="row tm-brand-row">
+          <div class="col-lg-4 col-11">
+            <div class="tm-brand-container tm-bg-white-transparent">
+              <i class="fas fa-2x fa-pen tm-brand-icon"></i>
+              <div class="tm-brand-texts">
+                <h1 class="text-uppercase tm-brand-name">College Tab</h1>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-8 col-1">
+            <div class="tm-nav">
+              <nav
+                class="navbar navbar-expand-lg navbar-light tm-bg-white-transparent tm-navbar">
+                <button
+                  class="navbar-toggler"
+                  type="button"
+                  data-toggle="collapse"
+                  data-target="#navbarNav"
+                  aria-controls="navbarNav"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                  <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <button data-toggle="collapse" data-target="#create" class="btn btn-outline-dark">Create new test</a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="{% url 'teacher:t_db' teacher.id %}" class="btn btn-outline-dark">
+                        Dashboard
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="{% url 't_logout' %}" class="btn btn-outline-dark">
+                        Logout
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <section class="row collapse" id="create">
+          <div class="col-12">
+             <div class="parallax-window tm-services-parallax-header tm-testimonials-parallax-header"
+                  data-parallax="scroll"
+                  data-z-index="101"
+                  data-image-src="{% static '' %}">
+ 
+                  <div class="tm-bg-white-transparent text-center tm-services-header tm-testimonials-header">
+                     <h3 style="color:black">Create New Test</h3>
+                     <br>
+                  <form action="{% url 'teacher:t_subject_exam_db' teacher.id class.id subject.subject_code  %}" method="POST" id="tmContactForm" class="tm-bg-black-transparent tm-contact-form">
+                  <table>
+                  {% csrf_token %}
+                  <form action="{% url 'teacher:t_subject_exam_db' teacher.id class.id subject.subject_code %}" class="form" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                      {% render_field form.topic type="text" class="form-control" placeholder="Enter Topic" required="on" %}
+                    </div>
+                    <div class="form-group">
+                      {% render_field form.link type="text" class="form-control" placeholder="Embed Link" required="on" %}
+                    </div>
+                    <div class="form-group">
+                      {% render_field form.form_link type="text" class="form-control" placeholder="Google Link" required="on" %}
+                    </div>
+                    <div class="form-group">
+                      {% render_field form.date type="date" class="form-control" required="on" %}
+                    </div>
+                    <div class="form-group">
+                      {% render_field form.starttime type="time" class="form-control" placeholder="Start Time" required="on" %}
+                    </div>
+                    <div class="form-group">
+                      {% render_field form.endtime type="time" class="form-control" placeholder="End Time" required="on" %}
+                    </div>                  
+                  <div class="text-right">
+                    <button type="submit" class="btn btn-primary tm-btn-submit rounded-0">
+                      Submit
+                    </button>
+                  </div>
+                </table>
+              </form>
+            </div>
+          </div>
+          </section>
+          <section class="row" id="tmServices">
+            <div class="col-12">
+              <p><h2 style="color:white;">Exams Created By {{teacher.name}}:</h2></p>
+                  <div id="assignments">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th scope="col">Topic</th>
+                          <th scope="col">Link</th>
+                          <th scope="col">Date</th>
+                          <th scope="col">Time</th>
+                          <th scope="col">View Submissions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for exam in exam_list %}
+                        <tr>
+                          <td scope="row">{{exam.topic}}</td>
+                          <td><a href="{{ exam.form_link }}" class="btn btn-success assign_btn" target="_blank">Click</a></td>
+                          <td>{{exam.date}}</td>
+                          <td>{{exam.starttime}}-{{exam.endtime}}</td>
+                          <td class="text-center"><a href="{% url 'teacher:t_subject_exam_submission' teacher.id class.id subject.subject_code exam.id %}">Click</a></td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+              </div>  
+          </section>
+
+         <!-- Page footer -->
+         <footer class="row">
+            <p class="col-12 text-white text-center tm-copyright-text">
+              College Tab
+            </p>
+          </footer>
+        </div>
+        <!-- .container-fluid -->
+      </div>
+  
+      <script src="{% static 'js/jquery.min.js' %}"></script>
+      <script src="{% static 'js/parallax.min.js' %}"></script>
+      <script src="{% static 'js/bootstrap.min.js' %}"></script>
+      <script>
+          $(function(){
+              $('.tabgroup > div').hide();
+              $('.tabgroup > div:first-of-type').show();  
+              $('.tabs a').click(function(e){
+                e.preventDefault();
+                var $this = $(this),
+                    tabgroup = '#'+$this.parents('.tabs').data('tabgroup'),
+                    others = $this.closest('li').siblings().children('a'),
+                    target = $this.attr('href');
+                others.removeClass('active');
+                $this.addClass('active');
+                $(tabgroup).children('div').hide();
+                $(target).show();
+  
+                // Scroll to tab content (for mobile)
+                if($(window).width() < 992) {
+                    $('html, body').animate({
+                        scrollTop: $("#first-tab-group").offset().top
+                    }, 200);    
+                }              
+              })  
+          });
+          
+      </script>
+    </body>
+  </html>

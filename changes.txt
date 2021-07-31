@@ -1,0 +1,62 @@
+
+to change static link
+
+add this to the html file
+{% load static %}     
+
+then change     
+every static link from 
+<link rel="stylesheet" href="css/all.min.css" /> 
+to     
+<link rel="stylesheet" href="{% static 'css/all.min.css' %}" />
+
+do this for img slick js css webfont
+
+
+add 
+href = "{% url 'name' %}"  check name in ctapp/urls.py
+
+to use data 
+example in student dashboard
+
+!!!!!!!!!!!! views.py !!!!!!!!!!!!!!!!!!!
+@login_required(login_url='s_login/')
+def student_dashboard(request,id):
+    template = loader.get_template('index.html')
+    current_student = student.objects.get(enrollment_number=id)
+    subjects = get_subjects(current_student)
+    context = {'student':current_student,'subject_list':subjects}
+    return HttpResponse(template.render(context, request))
+    
+!!!!!!!!!!!!!!!!! student dashboard.html !!!!!!!!!!!!!!!!!
+
+
+here we sent current_student , subject_list to html
+
+to display name of student {{current_student.name}}
+check models.py for other attributes
+
+subject_list 
+
+{% for subject in subject_list%}
+<h1>subject.name</h1>
+{% endfor %}
+
+
+to go to next url
+example from stud_dashboard to list of assignment for a subject
+
+use 
+<a href = "{{% url 's_subject_assignment_list' current_student.id subject.subject_code %}}"></a>
+
+
+
+
+
+
+to run server cmd prompt
+python manage.py runserver
+
+
+
+

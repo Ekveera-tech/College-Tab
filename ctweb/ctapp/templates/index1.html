@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<H1>Manas Khare, Ekveera Joshi, Anushree Kumar, Online Changes!</H1>
+
+<u>{{name}}</u>
+{% for s in student %}
+<h1>{{s.name}}</h1>
+<h2>{{s.enrollment_number}}</h2>
+{% endfor %}
+
+<br><br>
+
+{% for s in sub %}
+<h1>{{s.name}}</h1>
+<h2>{{s.subject_code}}</h2>
+{% endfor %}
+
+
+<br><br>
+{% for t in teachers %}
+<h1>{{t.t_id.name}}</h1>
+<h2>{{t.c_id.sem}}TH - {{t.c_id.sec}}</h2>
+<h1>{{t.s_id.name}}</h1>
+{% endfor %}
+
+
+{% for s in student %}
+<a href="{% url 's_db' s.enrollment_number %}">go to student dashboard</a>
+{% endfor %}
+
+</body>
+</html>

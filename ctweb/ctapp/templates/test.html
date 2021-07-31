@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Test</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" />
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/templatemo-style.css' %}" />
+  
+  </head>
+  
+<!--
+Parallo Template
+https://templatemo.com/tm-534-parallo
+-->
+  <body id="body" style="overflow: hidden;">
+    <div class="parallax-window" data-parallax="scroll" data-image-src="{% static 'img/test.jpg' %}">
+      <div class="container-fluid">
+        <div class="row tm-brand-row">
+          <div class="col-lg-4 col-11">
+            <div class="tm-brand-container tm-bg-white-transparent">
+              <i class="fas fa-2x fa-pen tm-brand-icon"></i>
+              <div class="tm-brand-texts">
+                <h1 class="text-uppercase tm-brand-name">College Tab</h1>   
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-8 col-1">
+            <div class="tm-nav">
+              <nav
+                class="navbar navbar-expand-lg navbar-light tm-bg-white-transparent tm-navbar">
+                <button
+                  class="navbar-toggler"
+                  type="button"
+                  data-toggle="collapse"
+                  data-target="#navbarNav"
+                  aria-controls="navbarNav"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                  <ul class="navbar-nav">
+                    <li class="btn btn-outline-dark">
+                        <b>Test:</b> {{test.topic}}
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'student:s_db' student.enrollment_number %}" class="btn btn-outline-dark"> Go Back </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="{% url 's_logout' %}" class="btn btn-outline-dark" style="height: 60px; text-align:center;">Logout</a>
+                    </li>
+                  </ul>
+                </div>
+              </nav>
+            </div>
+          </div>
+        </div>
+
+        <!-- Services header -->
+        <section class="Test_section" id="test_body">
+          <div class="col-12">
+              <div class="parallax-window tm-services-parallax-header tm-testimonials-parallax-header"
+                  data-parallax="scroll"
+                  data-z-index="101">
+                <div class="tm-bg-white-transparent tm-services-header tm-testimonials-header" style='color:black;'>
+                  <div>
+                    General instructions:<br><br>
+                    <ol>
+                      <li>Switching of tab is not allowed.</li>
+                      <li>Please make sure that your face is visible to the camera at all times.</li>
+                      <li>Any unusual activity will be recorded and checked for potential malpractices.</li>
+                      <li>Test will be automatically submitted after the alloted time i.e <b>{{test.date}}<br> {{test.starttime}}-{{test.endtime}}</b></li>
+                    </ol>
+                  </div>
+                  <a onclick="alertUser()" id="start_btn" class="btn btn-outline-light">Start Test!</a>
+               </div>
+              </div>
+            </div> 
+        </section>
+        <div id="test_ques" style="display:none;">
+          <div id="live_vd" class="test_elements">
+                <div class="card-content center-align">
+                    <video id="video" width="600" height="250" autoplay></video>
+                    <canvas id="canvas" width="600" height="450" class="hide"></canvas>
+                    <!-- <canvas id="detect-data" width="600" height="450" class="hide"></canvas> -->
+                    
+                </div>
+          </div>
+          <div id="test_form" class="test_elements">
+             {{test.link|safe}}
+          </div>
+       </div>
+
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/parallax.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+	
+    <script>
+        $(function(){
+            $('.tabgroup > div').hide();
+            $('.tabgroup > div:first-of-type').show();  
+            $('.tabs a').click(function(e){
+              e.preventDefault();
+              var $this = $(this),
+                  tabgroup = '#'+$this.parents('.tabs').data('tabgroup'),
+                  others = $this.closest('li').siblings().children('a'),
+                  target = $this.attr('href');
+              others.removeClass('active');
+              $this.addClass('active');
+              $(tabgroup).children('div').hide();
+              $(target).show();
+
+              // Scroll to tab content (for mobile)
+              if($(window).width() < 992) {
+                  $('html, body').animate({
+                      scrollTop: $("#first-tab-group").offset().top
+                  }, 200);    
+              }              
+            })  
+        });
+        
+    </script>
+
+<!--cut copy disabled-->
+    <script>
+      $(document).ready(function() {
+          $('body').bind('cut copy', function(e) {
+              e.preventDefault();
+            });
+        });
+    </script>
+
+
+<!--right click disabled-->
+<script>
+      $(document).ready(function() {
+          $("body").on("contextmenu", function(e) {
+              return false;
+            });
+        });
+    </script>
+
+
+<!--full screen logic-->
+
+
+<script>
+
+  function alertUser(){
+    var response=confirm("The test is available only in the fullscreen.");
+    if(response==true){
+      openFullscreen();
+    }
+  }
+
+  /* Get the documentElement (<html>) to display the page in fullscreen */
+  var elem = document.getElementById("test_ques");
+
+  /* View in fullscreen */
+  function openFullscreen() {
+    
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) { /* Safari */
+      elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { /* IE11 */
+      elem.msRequestFullscreen();
+    }
+  }
+
+  /* Close fullscreen */
+  function closeFullscreen() {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+      toggleSection('test_ques');
+    } else if (document.webkitExitFullscreen) { /* Safari */
+      document.webkitExitFullscreen();
+      toggleSection('test_ques');
+    } else if (document.msExitFullscreen) { /* IE11 */
+      document.msExitFullscreen();
+      toggleSection('test_ques');
+    }
+  }
+
+  
+  function toggleSection(ele_id){
+    var output = document.getElementById(ele_id);
+    var res=output.style.display;
+    if(res=="block"){
+      output.style.display="none";
+    }
+    else{
+      output.style.display="block";
+    }
+  }
+
+  document.addEventListener("fullscreenchange", function() {
+    toggleSection('test_ques');
+  });
+  document.addEventListener("mozfullscreenchange", function() {
+    toggleSection('test_ques');
+  });
+  document.addEventListener("webkitfullscreenchange", function() {
+    toggleSection('test_ques');
+  });
+  document.addEventListener("msfullscreenchange", function() {
+    toggleSection('test_ques');
+  });
+
+</script>
+
+<!--socket logic-->
+    <script type="text/javascript">
+    var video = document.getElementById('video');
+
+    // Get access to the camera!
+    if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        // Not adding `{ audio: true }` since we only want video now
+        navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+            //video.src = window.URL.createObjectURL(stream);
+            video.srcObject = stream;
+            video.play();
+        });
+    }
+        var socket = new WebSocket('ws://localhost:8001/websocket');
+
+        $(document).ready(function () {
+            let video = document.getElementById('video');
+            let canvas = document.getElementById('canvas');
+            let context = canvas.getContext('2d');
+            let draw_canvas = document.getElementById('detect-data');
+            let draw_context = draw_canvas.getContext('2d');
+            let image = new Image();
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({video: true}).then(function (stream) {
+                    video.srcObject = stream;
+                    video.play();
+                });
+            }
+
+            function drawCanvas() {
+                context.drawImage(video, 0, 0, 600, 450);
+                socket.send(canvas.toDataURL('image/png'));
+            }
+
+            document.getElementById("start_btn").addEventListener("click", function () {
+                //socket.send("hello");
+                drawCanvas();
+                socket.send("stud:"+"{{student.enrollment_number}}");
+                socket.send("testid:"+"{{test.id}}");
+            });
+
+            socket.onmessage = function (e) {
+                image.onload = function () {
+                    draw_context.drawImage(image, 0, 0, 600, 450);
+                };
+                image.src = e.data;
+                drawCanvas();
+            };
+        })
+    </script>
+
+  </body>
+</html>
